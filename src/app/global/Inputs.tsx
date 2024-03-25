@@ -6,13 +6,14 @@ interface InputProps {
   index?: number;
   label?: string;
   value: string;
+  fullWidth?: boolean;
   handleChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index?: number
   ) => void;
 }
 
-export function CustomInput({ index, label, value, handleChange }: InputProps) {
+export function CustomInput({ index, label, value, fullWidth, handleChange }: InputProps) {
   return (
     <Box>
       {label && (
@@ -30,6 +31,7 @@ export function CustomInput({ index, label, value, handleChange }: InputProps) {
           onChange={(event) => handleChange(event, index)}
           multiline
           maxRows={4}
+          fullWidth={fullWidth}
         />
         {label && (
           <IconButton size="small">

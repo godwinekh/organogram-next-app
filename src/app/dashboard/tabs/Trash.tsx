@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
+import NoQuestions from "./NoQuestions";
 
 export default function Trash() {
-  return <Box>This is the trash tab!</Box>
+  return <NoQuestions tab="trash" />
 }

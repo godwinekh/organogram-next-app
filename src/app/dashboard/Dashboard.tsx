@@ -6,15 +6,19 @@ import Questions from "./tabs/Questions";
 import Shared from "./tabs/Shared";
 import Trash from "./tabs/Trash";
 import Details from "./details/Details";
+import { useAppSelector } from "@/lib/hooks";
 
 export type Tabs = "questions" | "shared" | "trash";
 
 export default function Dashboard() {
   const [selectedTab, setSelectedTab] = useState<Tabs>("questions");
+  const questions = useAppSelector(state => state.questions.allQuestions);
 
   const handleTabSelection = (tab: Tabs) => {
     setSelectedTab(tab);
   };
+
+  console.log(questions);
 
   return (
     <Grid container alignItems="stretch">

@@ -1,5 +1,6 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
+import PurpleBlackButton from "../global/Button";
 
 export default function Header() {
   return (
@@ -16,9 +17,9 @@ export default function Header() {
         <Typography variant="h6" color="default" mb={1}>
           QuestionTime
         </Typography>
-        <Button variant="contained" startIcon={<Add />} color="secondary">
+        <PurpleBlackButton startIcon={<Add />}>
           New
-        </Button>
+        </PurpleBlackButton>
       </Box>
 
       <Box>

@@ -1,6 +1,7 @@
 import { Box, Button, InputLabel, TextField, Typography } from "@mui/material";
 import { ChangeEvent, useState } from "react";
-import { CustomInput } from "./Inputs";
+import { CustomInput } from "../../global/Inputs";
+import { useAppSelector } from "@/lib/hooks";
 
 interface Question {
   question: string;
@@ -13,51 +14,56 @@ const defaultQuestion: Question = {
 };
 
 export default function ItemDetail({ onEdit: isEditing }: { onEdit: boolean }) {
-  const [question, setQuestion] = useState<Question>(defaultQuestion);
+  const activeQuestion = useAppSelector(
+    (state) => state.questions.activeQuestion
+  );
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index?: number
   ) => {
-    if (index) {
-      setQuestion((prev) => {
-        const newOptions = [...prev.options];
-        newOptions[index] = e.target.value;
-        return {
-          question: prev.question,
-          options: newOptions,
-        };
-      });
-    } else {
-      setQuestion((prev) => ({ ...prev, question: e.target.value }));
-    }
+    // if (index) {
+    //   setQuestion((prev) => {
+    //     const newOptions = [...prev.options];
+    //     newOptions[index] = e.target.value;
+    //     return {
+    //       question: prev.question,
+    //       options: newOptions,
+    //     };
+    //   });
+    // } else {
+    //   setQuestion((prev) => ({ ...prev, question: e.target.value }));
+    // }
   };
 
   const handleDeleteOption = (index: number) => {
-    if (question.options.length > 3) {
-      setQuestion((item) => {
-        const filteredOptions = item.options.filter((option, idx) => idx === index);
-        return {
-          ...item,
-        }
-      })
-    }
-  }
+    // if (question.options.length > 3) {
+    //   setQuestion((item) => {
+    //     const filteredOptions = item.options.filter((option, idx) => idx === index);
+    //     return {
+    //       ...item,
+    //     }
+    //   })
+    // }
+  };
 
   return (
     <Box padding={2} sx={{ maxHeight: 330, overflowY: "scroll" }}>
       <Box mb={3}>
         <InputLabel htmlFor="question">Question</InputLabel>
         {isEditing ? (
-          <CustomInput value={question.question} handleChange={handleChange} />
+          <CustomInput
+            value={activeQuestion.question}
+            handleChange={handleChange}
+          />
         ) : (
-          <Typography variant="body1">{question.question}</Typography>
+          <Typography variant="body1">{activeQuestion.question}</Typography>
         )}
       </Box>
 
       <Box mb={2}>
         {/* <Typography variant="subtitle1">Options</Typography> */}
-        {question.options.map((option, index) => (
+        {activeQuestion.options.map((option, index) => (
           <Box key={index} mb={1}>
             {isEditing ? (
               <CustomInput

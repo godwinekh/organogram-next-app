@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
+import NoQuestions from "./NoQuestions";
 
 export default function Shared() {
-  return <Box>This is the shared tab!</Box>;
+  return <NoQuestions tab="shared" />;
 }

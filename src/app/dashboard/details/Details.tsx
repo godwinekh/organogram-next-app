@@ -11,9 +11,13 @@ import {
 } from "@mui/material";
 import ItemDetail from "./ItemDetail";
 import { useState } from "react";
+import { useAppSelector } from "@/lib/hooks";
 
 export default function Details() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const activeQuestion = useAppSelector(
+    (state) => state.questions.activeQuestion
+  );
 
   return (
     <Box
@@ -40,31 +44,51 @@ export default function Details() {
         </Typography>
       </Box>
 
-      <Box>
+      {!activeQuestion && (
         <Box
+          height={300}
           sx={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "center",
             alignItems: "center",
-            padding: 2,
+            px: 5,
           }}
         >
-          <Typography variant="h6">Title of Question</Typography>
-          <Box sx={{ display: "flex" }}>
-            <IconButton size="small" onClick={() => setIsEditing(!isEditing)}>
-              {isEditing ? <Close /> : <Edit />}
-            </IconButton>
-
-            <IconButton size="small" color="error">
-              <Delete />
-            </IconButton>
-          </Box>
+          <Typography color="GrayText" textAlign="center">
+            Select an question to preview, edit or delete.
+          </Typography>
         </Box>
+      )}
 
-        <Divider />
+      {activeQuestion && (
+        <Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: 2,
+            }}
+          >
+            <Typography variant="h6" sx={{ overflow: "clip" }}>
+              {activeQuestion.question}
+            </Typography>
+            <Box sx={{ display: "flex" }}>
+              <IconButton size="small" onClick={() => setIsEditing(!isEditing)}>
+                {isEditing ? <Close /> : <Edit />}
+              </IconButton>
 
-        <ItemDetail onEdit={isEditing} />
-      </Box>
+              <IconButton size="small" color="error">
+                <Delete />
+              </IconButton>
+            </Box>
+          </Box>
+
+          <Divider />
+
+          <ItemDetail onEdit={isEditing} />
+        </Box>
+      )}
     </Box>
   );
 }
