@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# QuestionTime Frontend Application
 
-## Getting Started
+Welcome to the QuestionTime (QT) frontend application repository! This repository contains the codebase for the user interface (UI) of QuestionTime, a SaaS platform that allows registered users to set up multiple-choice questions for the public.
 
-First, run the development server:
+#### Please Note: This application is not production ready, but as a test project for a job application. It lacks certain optimization due to lack of time to work on it.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Introduction
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+QuestionTime (QT) provides a platform where users can easily create and manage multiple-choice questions. The frontend application interacts with the backend APIs provided by QT to facilitate question setup and management.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How to use
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+The functionality of the UI in the application is basically to allow users do the following:
 
-## Learn More
+1. Visit [the frontend application here](https://organogram-next-app.vercel.app/)
+2. Enter your email address and a personal token will be generated for you
+3. Once you are onboarded, you can carry out basic CRUD operations on the questions in your dashboard.
 
-To learn more about Next.js, take a look at the following resources:
+## Backend APIs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The backend engineers of QT have provided a set of APIs to support the frontend work. These APIs are available at [https://qt.organogram.app/](https://qt.organogram.app/). The OpenAPI documentation for the API is available at [https://qt.organogram.app/openapi.yaml](https://qt.organogram.app/openapi.yaml).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The API uses Token authentication. Users need to include their personal token in the header when making requests. For example:
 
-## Deploy on Vercel
+To obtain a token, users can send a POST request to the `/token` endpoint with their email address. Upon successful request, a token will be provided in the response, which should be stored for all question management operations.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Main Functionality
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The main functionality of the frontend application includes:
+
+- Displaying existing questions and their configured options.
+- Creating new questions along with options.
+- Adding or removing options to questions.
+- Ensuring each question has a minimum of 3 options and a maximum of 5 options.
+
+## Technology Stack
+
+This frontend application is built using [Next.js](https://nextjs.org/), [Material UI](https://mui.com/), [Redux ToolKit](https://redux-toolkit.js.org/), and other supporting technologies.
+
+## Original Content
+
+No templates was used to create the application. No UI/UX design. Just direct design from the abstract world 😁
+
+Thank you for using QuestionTime!
