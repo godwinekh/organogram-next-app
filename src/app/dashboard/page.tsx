@@ -11,6 +11,8 @@ import DetailsModal from "./modals/DetailsModal";
 import Notification from "../global/Notification";
 import { closeSnack } from "@/lib/features/ui/uiSlice";
 import DeleteModal from "./modals/DeleteModal";
+import Image from "next/image";
+import Unauthorized from "@@/images/unauthorized.jpg";
 
 export default function Page() {
   const theme = useTheme();
@@ -30,14 +32,33 @@ export default function Page() {
 
   if (!token) {
     return (
-      <Box>
-        <Typography>Redirecting user to sign in...</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          height: "100vh",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Image
+          src={Unauthorized}
+          alt="Authenticate User Image"
+          width={240}
+          height={240}
+          quality={100}
+          style={{ objectFit: "cover", zIndex: -1 }}
+        />
+        <Typography variant="overline" fontWeight="bold">
+          Redirecting user to sign in...
+        </Typography>
       </Box>
     );
   }
 
   return (
-    <Box px={{xs: 2, md:4}} bgcolor="whitesmoke" height="100vh">
+    <Box px={{ xs: 2, md: 4 }} bgcolor="whitesmoke" height="100vh">
       <Header />
       <Dashboard />
 

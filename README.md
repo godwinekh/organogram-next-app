@@ -12,7 +12,7 @@ QuestionTime (QT) provides a platform where users can easily create and manage m
 
 The functionality of the UI in the application is basically to allow users do the following:
 
-1. Visit [the frontend application here](https://organogram-next-app.vercel.app/)
+1. Visit [the frontend application here](https://questiontime-chi.vercel.app/)
 2. Enter your email address and a personal token will be generated for you
 3. Once you are onboarded, you can carry out basic CRUD operations on the questions in your dashboard.
 
