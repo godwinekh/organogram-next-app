@@ -43,7 +43,7 @@ export default function Header() {
       <Box sx={{ display: "flex", alignItems: "flex-end", gap: 2 }}>
         <Badge
           badgeContent={count}
-          color="warning"
+          color="error"
           invisible={!count ? true : false}
         >
           <PurpleBlackButton

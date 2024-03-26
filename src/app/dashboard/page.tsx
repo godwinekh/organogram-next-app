@@ -16,12 +16,11 @@ export default function Page() {
   const theme = useTheme();
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const isMediumUp = useMediaQuery(theme.breakpoints.up("md"))
+  const isMediumUp = useMediaQuery(theme.breakpoints.up("md"));
   const { open, type, message } = useAppSelector((state) => state.ui.snack);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-
     if (token) {
       dispatch(getQuestionsAsync());
     } else {
@@ -30,13 +29,15 @@ export default function Page() {
   }, [dispatch, token, router]);
 
   if (!token) {
-    return <Box>
-      <Typography>Redirecting user to sign in...</Typography>
-    </Box>
+    return (
+      <Box>
+        <Typography>Redirecting user to sign in...</Typography>
+      </Box>
+    );
   }
 
   return (
-    <Box px={2}>
+    <Box px={{xs: 2, md:4}} bgcolor="whitesmoke" height="100vh">
       <Header />
       <Dashboard />
 

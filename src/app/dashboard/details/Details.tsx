@@ -13,6 +13,7 @@ import ItemDetail from "./ItemDetail";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { openModal } from "@/lib/features/ui/uiSlice";
+import { purple } from "@mui/material/colors";
 
 export default function Details() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -26,9 +27,10 @@ export default function Details() {
   return (
     <Box
       sx={{
-        border: ".5px solid whitesmoke",
+        border: ".5px solid lightgrey",
         borderRadius: 1,
         overflowX: "hidden",
+        backgroundColor: "white",
       }}
     >
       <Box
@@ -37,7 +39,7 @@ export default function Details() {
           justifyContent: "space-between",
           alignItems: "center",
           padding: 2,
-          backgroundColor: "whitesmoke",
+          backgroundColor: purple[900],
         }}
       >
         <Box
@@ -48,16 +50,20 @@ export default function Details() {
           }}
         >
           <Icon color="action">
-            <Description fontSize="small" />
+            <Description fontSize="small" sx={{ color: "white" }} />
           </Icon>
-          <Typography variant="overline" color="GrayText">
+          <Typography variant="overline" color="white">
             Details
           </Typography>
         </Box>
 
         {activeQuestion.id && (
           <Box sx={{ display: "flex" }}>
-            <IconButton size="small" onClick={() => setIsEditing(!isEditing)}>
+            <IconButton
+              size="small"
+              sx={{ color: "white" }}
+              onClick={() => setIsEditing(!isEditing)}
+            >
               {isEditing ? (
                 <Close fontSize="small" />
               ) : (
@@ -67,8 +73,8 @@ export default function Details() {
 
             <IconButton
               size="small"
-              color="error"
               onClick={() => dispatch(openModal("delete"))}
+              sx={{ color: "white" }}
             >
               <Delete />
             </IconButton>
@@ -87,7 +93,7 @@ export default function Details() {
           }}
         >
           <Typography color="GrayText" textAlign="center">
-            Select an question to preview, edit or delete.
+            Select a question to preview, edit or delete.
           </Typography>
         </Box>
       )}

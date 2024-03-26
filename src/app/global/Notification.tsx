@@ -17,7 +17,12 @@ export default function Notification({
 }: NotificationProps) {
   return (
     <div>
-      <Snackbar open={open} autoHideDuration={3000} onClose={onClose}>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        open={open}
+        autoHideDuration={5000}
+        onClose={onClose}
+      >
         <Alert
           onClose={onClose}
           severity={type}

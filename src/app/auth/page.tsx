@@ -1,10 +1,20 @@
 "use client";
-import { Box, Button, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import { CustomInput } from "../global/Inputs";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/lib/hooks";
 import { openSnack } from "@/lib/features/ui/uiSlice";
+import Image from "next/image";
+import AuthBg from "@@/images/auth-bg.jpg";
+import { AccountBox } from "@mui/icons-material";
 
 interface ReturnDataObject {
   token: string;
@@ -12,6 +22,7 @@ interface ReturnDataObject {
 
 export default function Page() {
   const [email, setEmail] = useState<string>("");
+  const [loading, setIsLoading] = useState(false);
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -22,6 +33,7 @@ export default function Page() {
   };
 
   const handleSignIn = async () => {
+    setIsLoading(true)
     try {
       const res = await fetch("https://qt.organogram.app/token", {
         method: "POST",
@@ -55,6 +67,7 @@ export default function Page() {
       );
       // console.log("Error fetching data:", error);
     }
+    setIsLoading(false)
   };
 
   return (
@@ -65,9 +78,20 @@ export default function Page() {
         alignItems: "center",
         width: "100%",
         height: "100vh",
-        backgroundColor: "whitesmoke",
+        position: "relative",
+        backgroundColor: "#00000095",
       }}
     >
+      {/* Background Image */}
+      <Box>
+        <Image
+          src={AuthBg}
+          alt="Neon background"
+          fill
+          quality={100}
+          style={{ objectFit: "cover", zIndex: -1 }}
+        />
+      </Box>
       <Box
         width={{ xs: "90%", sm: "65%", md: "40%" }}
         sx={{
@@ -97,10 +121,20 @@ export default function Page() {
         </Box>
 
         <Box width="80%" py={1}>
-          <CustomInput
+          <TextField
+            variant="outlined"
+            size="small"
+            margin="dense"
             value={email}
-            handleChange={handleChange}
-            fullWidth={true}
+            onChange={handleChange}
+            fullWidth
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AccountBox fontSize="large" sx={{ color: "black" }} />
+                </InputAdornment>
+              ),
+            }}
           />
         </Box>
 
@@ -111,7 +145,8 @@ export default function Page() {
             color="secondary"
             onClick={handleSignIn}
           >
-            Sign in
+            {!loading && "Sign in"}
+            {loading && <CircularProgress variant="indeterminate" />}
           </Button>
         </Box>
       </Box>

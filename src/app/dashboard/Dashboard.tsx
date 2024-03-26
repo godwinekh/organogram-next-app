@@ -26,7 +26,7 @@ export default function Dashboard() {
         <SideNavigation onSelected={handleTabSelection} />
       </Grid>
 
-      <Grid item xs={12} md={7} mx={{md: 2}}>
+      <Grid item xs={12} md={7} mx={{md: 2}} my={{xs: 2, md: 0}}>
         {selectedTab === "questions" && <Questions />}
         {selectedTab === "shared" && <Shared />}
         {selectedTab === "trash" && <Trash />}
