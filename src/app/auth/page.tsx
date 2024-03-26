@@ -3,6 +3,8 @@ import { Box, Button, Typography } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import { CustomInput } from "../global/Inputs";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/lib/hooks";
+import { openSnack } from "@/lib/features/ui/uiSlice";
 
 interface ReturnDataObject {
   token: string;
@@ -11,6 +13,7 @@ interface ReturnDataObject {
 export default function Page() {
   const [email, setEmail] = useState<string>("");
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -31,13 +34,26 @@ export default function Page() {
       });
 
       const data: ReturnDataObject = await res.json();
-      // Stores the token in local storage
+      // Stores the token and email in local storage
       localStorage.setItem("token", data.token);
+      localStorage.setItem("email", email);
       // Redirects the user to the dashboard
       router.push("/dashboard");
+      dispatch(
+        openSnack({
+          type: "success",
+          message: "Sign in successful! Good to have you here.",
+        })
+      );
       console.log(data);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      dispatch(
+        openSnack({
+          type: "error",
+          message: "Error signing you in. Do try again",
+        })
+      );
+      // console.log("Error fetching data:", error);
     }
   };
 

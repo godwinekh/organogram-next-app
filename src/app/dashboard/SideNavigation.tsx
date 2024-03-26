@@ -67,3 +67,10 @@ export default function SideNavigation(props: SideNavProps) {
     </List>
   );
 }
+
+{/* <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }} mb={1}>
+  <Typography variant="subtitle2" color="GrayText">
+    Signed in as:
+  </Typography>
+  <Typography variant="overline">{userEmail}</Typography>
+</Box>; */}

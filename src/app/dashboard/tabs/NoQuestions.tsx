@@ -1,9 +1,12 @@
 import { Add } from "@mui/icons-material";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { Tabs } from "../Dashboard";
 import PurpleBlackButton from "@/app/global/Button";
+import { useAppDispatch } from "@/lib/hooks";
+import { openModal } from "@/lib/features/ui/uiSlice";
 
 export default function NoQuestions(props: { tab: Tabs }) {
+  const dispatch = useAppDispatch();
   let message: string;
 
   switch (props.tab) {
@@ -30,9 +33,15 @@ export default function NoQuestions(props: { tab: Tabs }) {
     >
       <Typography textAlign="center">No questions found. {message}!</Typography>
 
-      <PurpleBlackButton  startIcon={<Add />} size="large">
-        New
-      </PurpleBlackButton>
+      {props.tab === "questions" && (
+        <PurpleBlackButton
+          onClick={() => dispatch(openModal("question"))}
+          startIcon={<Add />}
+          size="large"
+        >
+          New
+        </PurpleBlackButton>
+      )}
     </Box>
   );
 }

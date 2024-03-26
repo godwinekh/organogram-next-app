@@ -1,11 +1,17 @@
 import { Box, Button, InputLabel, TextField, Typography } from "@mui/material";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { CustomInput } from "../../global/Inputs";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { updateActiveQuestion } from "@/lib/features/questions/questionsSlice";
 
 interface Question {
   question: string;
   options: string[];
+}
+
+interface ItemProps {
+  onEdit: boolean;
+  onSave: () => void;
 }
 
 const defaultQuestion: Question = {
@@ -13,27 +19,58 @@ const defaultQuestion: Question = {
   options: ["You are goood", "I am good", "We are good", "Always good"],
 };
 
-export default function ItemDetail({ onEdit: isEditing }: { onEdit: boolean }) {
+export default function ItemDetail({ onEdit: isEditing, onSave }: ItemProps) {
   const activeQuestion = useAppSelector(
     (state) => state.questions.activeQuestion
   );
+  const [editedQuestion, setEditedQuestion] = useState<Question>({
+    question: "",
+    options: [],
+  });
+  const dispatch = useAppDispatch();
+  let canSave: boolean = false;
+
+  if (isEditing && editedQuestion.question !== activeQuestion.question) {
+    canSave = true;
+  } else {
+    for (const option of editedQuestion.options) {
+      if (activeQuestion.options.includes(option)) {
+        canSave = false;
+      } else {
+        canSave = true;
+        break;
+      }
+    }
+  }
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index?: number
   ) => {
-    // if (index) {
-    //   setQuestion((prev) => {
-    //     const newOptions = [...prev.options];
-    //     newOptions[index] = e.target.value;
-    //     return {
-    //       question: prev.question,
-    //       options: newOptions,
-    //     };
-    //   });
-    // } else {
-    //   setQuestion((prev) => ({ ...prev, question: e.target.value }));
-    // }
+    if (index) {
+      console.log(index);
+      setEditedQuestion((prev) => {
+        const newOptions = [...prev.options];
+        newOptions[index - 1] = e.target.value;
+        return {
+          question: prev.question,
+          options: newOptions,
+        };
+      });
+    } else {
+      console.log(index);
+      setEditedQuestion((prev) => ({ ...prev, question: e.target.value }));
+    }
+  };
+
+  const handleSave = () => {
+    const updatedActiveQuestion = {
+      id: activeQuestion.id,
+      ...editedQuestion,
+    };
+
+    dispatch(updateActiveQuestion(updatedActiveQuestion));
+    onSave();
   };
 
   const handleDeleteOption = (index: number) => {
@@ -47,13 +84,21 @@ export default function ItemDetail({ onEdit: isEditing }: { onEdit: boolean }) {
     // }
   };
 
+  useEffect(() => {
+    const { id, ...initialEditState } = activeQuestion;
+
+    if (isEditing) {
+      setEditedQuestion(initialEditState);
+    }
+  }, [isEditing, activeQuestion]);
+
   return (
-    <Box padding={2} sx={{ maxHeight: 330, overflowY: "scroll" }}>
+    <Box padding={3} sx={{ maxHeight: {md: 400}, overflowY: "scroll" }}>
       <Box mb={3}>
         <InputLabel htmlFor="question">Question</InputLabel>
         {isEditing ? (
           <CustomInput
-            value={activeQuestion.question}
+            value={editedQuestion.question}
             handleChange={handleChange}
           />
         ) : (
@@ -62,29 +107,35 @@ export default function ItemDetail({ onEdit: isEditing }: { onEdit: boolean }) {
       </Box>
 
       <Box mb={2}>
-        {/* <Typography variant="subtitle1">Options</Typography> */}
-        {activeQuestion.options.map((option, index) => (
-          <Box key={index} mb={1}>
-            {isEditing ? (
+        {isEditing &&
+          editedQuestion.options.map((option, index) => (
+            <Box key={index} mb={1}>
               <CustomInput
                 label={`Options ${index + 1}`}
-                index={index}
+                index={index + 1}
                 value={option}
                 handleChange={handleChange}
               />
-            ) : (
-              <Box>
-                <Typography variant="subtitle2" color="GrayText">
-                  Option {index + 1}
-                </Typography>
-                <Typography variant="body1">{option}</Typography>
-              </Box>
-            )}
-          </Box>
-        ))}
+            </Box>
+          ))}
+
+        {!isEditing &&
+          activeQuestion.options.map((option, index) => (
+            <Box key={index} mb={1}>
+              <Typography variant="subtitle2" color="GrayText">
+                Option {index + 1}
+              </Typography>
+              <Typography variant="body1">{option}</Typography>
+            </Box>
+          ))}
       </Box>
       {isEditing && (
-        <Button variant="contained" color="secondary" onClick={() => {}}>
+        <Button
+          variant="contained"
+          color="secondary"
+          disabled={!canSave ? true : false}
+          onClick={handleSave}
+        >
           Save
         </Button>
       )}

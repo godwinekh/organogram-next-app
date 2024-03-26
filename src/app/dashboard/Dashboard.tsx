@@ -12,27 +12,27 @@ export type Tabs = "questions" | "shared" | "trash";
 
 export default function Dashboard() {
   const [selectedTab, setSelectedTab] = useState<Tabs>("questions");
-  const questions = useAppSelector(state => state.questions.allQuestions);
 
   const handleTabSelection = (tab: Tabs) => {
     setSelectedTab(tab);
   };
 
-  console.log(questions);
-
   return (
-    <Grid container alignItems="stretch">
+    <Grid
+      container
+      sx={{ flexDirection: { xs: "column", md: "row" }}}
+    >
       <Grid item md={2}>
         <SideNavigation onSelected={handleTabSelection} />
       </Grid>
 
-      <Grid item xs={12} md={7} mx={2}>
+      <Grid item xs={12} md={7} mx={{md: 2}}>
         {selectedTab === "questions" && <Questions />}
         {selectedTab === "shared" && <Shared />}
         {selectedTab === "trash" && <Trash />}
       </Grid>
 
-      <Grid item md>
+      <Grid item md sx={{display: {xs: "none", md: "grid"}}}>
         <Details />
       </Grid>
     </Grid>

@@ -1,10 +1,14 @@
 import { Delete } from "@mui/icons-material";
-import { Box, IconButton, InputLabel, TextField } from "@mui/material";
-import { ChangeEvent } from "react";
+import {
+  Box,
+  IconButton,
+  InputLabel,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { ChangeEvent, FocusEvent, ReactNode } from "react";
 
 interface InputProps {
-  index?: number;
-  label?: string;
   value: string;
   fullWidth?: boolean;
   handleChange: (
@@ -13,7 +17,28 @@ interface InputProps {
   ) => void;
 }
 
-export function CustomInput({ index, label, value, fullWidth, handleChange }: InputProps) {
+interface CustomInputProps extends InputProps {
+  index?: number;
+  label?: string;
+}
+
+interface FormInputProps extends InputProps {
+  name: string;
+  multiline: boolean;
+  error: boolean;
+  errorMessage?: string;
+  handleBlur: (
+    event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+}
+
+export function CustomInput({
+  index,
+  label,
+  value,
+  fullWidth,
+  handleChange,
+}: CustomInputProps) {
   return (
     <Box>
       {label && (
@@ -21,7 +46,7 @@ export function CustomInput({ index, label, value, fullWidth, handleChange }: In
           {label}
         </InputLabel>
       )}
-      <Box sx={{display: "flex", alignItems: "center"}}>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
         <TextField
           id={label}
           variant="outlined"
@@ -43,4 +68,36 @@ export function CustomInput({ index, label, value, fullWidth, handleChange }: In
   );
 }
 
-export function RegularInput() {}
+export function FormInput({
+  name,
+  value,
+  error,
+  errorMessage,
+  handleChange,
+  handleBlur,
+  fullWidth,
+  multiline,
+}: FormInputProps) {
+  return (
+    <Box mb={2}>
+      <TextField
+        id={name}
+        name={name}
+        value={value}
+        size="small"
+        onChange={handleChange}
+        onBlur={handleBlur}
+        multiline={multiline}
+        fullWidth={fullWidth}
+        rows={4}
+      />
+      {error ? (
+        <Typography variant="subtitle2" color="error">
+          {errorMessage}
+        </Typography>
+      ) : (
+        ""
+      )}
+    </Box>
+  );
+}

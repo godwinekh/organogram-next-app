@@ -11,13 +11,17 @@ import {
 } from "@mui/material";
 import ItemDetail from "./ItemDetail";
 import { useState } from "react";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { openModal } from "@/lib/features/ui/uiSlice";
 
 export default function Details() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const activeQuestion = useAppSelector(
     (state) => state.questions.activeQuestion
   );
+  const dispatch = useAppDispatch();
+
+  const finishEditing = () => setIsEditing(false);
 
   return (
     <Box
@@ -30,21 +34,49 @@ export default function Details() {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "flex-start",
-          gap: 0.5,
-          backgroundColor: "whitesmoke",
+          justifyContent: "space-between",
+          alignItems: "center",
           padding: 2,
+          backgroundColor: "whitesmoke",
         }}
       >
-        <Icon color="action">
-          <Description fontSize="small" />
-        </Icon>
-        <Typography variant="overline" color="GrayText">
-          Details
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            gap: 0.5,
+          }}
+        >
+          <Icon color="action">
+            <Description fontSize="small" />
+          </Icon>
+          <Typography variant="overline" color="GrayText">
+            Details
+          </Typography>
+        </Box>
+
+        {activeQuestion.id && (
+          <Box sx={{ display: "flex" }}>
+            <IconButton size="small" onClick={() => setIsEditing(!isEditing)}>
+              {isEditing ? (
+                <Close fontSize="small" />
+              ) : (
+                <Edit fontSize="small" />
+              )}
+            </IconButton>
+
+            <IconButton
+              size="small"
+              color="error"
+              onClick={() => dispatch(openModal("delete"))}
+            >
+              <Delete />
+            </IconButton>
+          </Box>
+        )}
       </Box>
 
-      {!activeQuestion && (
+      {!activeQuestion.id && (
         <Box
           height={300}
           sx={{
@@ -60,33 +92,11 @@ export default function Details() {
         </Box>
       )}
 
-      {activeQuestion && (
+      {activeQuestion.id && (
         <Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: 2,
-            }}
-          >
-            <Typography variant="h6" sx={{ overflow: "clip" }}>
-              {activeQuestion.question}
-            </Typography>
-            <Box sx={{ display: "flex" }}>
-              <IconButton size="small" onClick={() => setIsEditing(!isEditing)}>
-                {isEditing ? <Close /> : <Edit />}
-              </IconButton>
-
-              <IconButton size="small" color="error">
-                <Delete />
-              </IconButton>
-            </Box>
-          </Box>
-
           <Divider />
 
-          <ItemDetail onEdit={isEditing} />
+          <ItemDetail onEdit={isEditing} onSave={finishEditing} />
         </Box>
       )}
     </Box>

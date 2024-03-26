@@ -2,6 +2,7 @@ import { Button, ButtonProps, styled } from "@mui/material";
 import { purple, grey } from "@mui/material/colors";
 
 const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
+  textTransform: "capitalize",
   color: theme.palette.getContrastText(purple[700]),
   backgroundColor: purple[900],
   "&:hover": {
@@ -10,5 +11,5 @@ const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 export default function PurpleBlackButton(props: ButtonProps) {
-  return <StyledButton variant="contained" {...props} />;
+  return <StyledButton variant="contained" {...props} disableRipple />;
 }
