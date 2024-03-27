@@ -1,5 +1,12 @@
-import { Box, Button, InputLabel, TextField, Typography } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  InputLabel,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { ChangeEvent, Fragment, useEffect, useState } from "react";
 import { CustomInput } from "../../global/Inputs";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { updateActiveQuestion } from "@/lib/features/questions/questionsSlice";
@@ -27,6 +34,7 @@ export default function ItemDetail({ onEdit: isEditing, onSave }: ItemProps) {
     question: "",
     options: [],
   });
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
   let canSave: boolean = false;
 
@@ -89,25 +97,48 @@ export default function ItemDetail({ onEdit: isEditing, onSave }: ItemProps) {
 
     if (isEditing) {
       setEditedQuestion(initialEditState);
+
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
+
+      return () => clearTimeout(timer);
     }
   }, [isEditing, activeQuestion]);
 
   return (
-    <Box padding={3} sx={{ maxHeight: {md: 400}, overflowY: "scroll" }}>
-      <Box mb={3}>
-        <InputLabel htmlFor="question">Question</InputLabel>
-        {isEditing ? (
-          <CustomInput
-            value={editedQuestion.question}
-            handleChange={handleChange}
+    <Box padding={3} sx={{ maxHeight: { md: 400 }, overflowY: "scroll" }}>
+      {/* Show a loading state between editing and not editing */}
+      {isEditing && isLoading && (
+        <Box>
+          <CircularProgress
+            variant="indeterminate"
+            size="2rem"
+            color="secondary"
           />
-        ) : (
+        </Box>
+      )}
+
+      <Box mb={3}>
+        {isEditing && !isLoading && (
+          <Fragment>
+            <InputLabel htmlFor="question">Question</InputLabel>
+
+            <CustomInput
+              value={editedQuestion.question}
+              handleChange={handleChange}
+            />
+          </Fragment>
+        )}
+
+        {!isEditing && (
           <Typography variant="body1">{activeQuestion.question}</Typography>
         )}
       </Box>
 
       <Box mb={2}>
         {isEditing &&
+          !isLoading &&
           editedQuestion.options.map((option, index) => (
             <Box key={index} mb={1}>
               <CustomInput

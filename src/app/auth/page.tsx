@@ -57,7 +57,7 @@ export default function Page() {
           message: "Sign in successful! Good to have you here.",
         })
       );
-      console.log(data);
+      setIsLoading(false)
     } catch (error) {
       dispatch(
         openSnack({
@@ -67,7 +67,7 @@ export default function Page() {
       );
       // console.log("Error fetching data:", error);
     }
-    setIsLoading(false)
+
   };
 
   return (
@@ -146,7 +146,7 @@ export default function Page() {
             onClick={handleSignIn}
           >
             {!loading && "Sign in"}
-            {loading && <CircularProgress variant="indeterminate" />}
+            {loading && <CircularProgress variant="indeterminate" color="inherit" size="1rem" sx={{color: "white"}} />}
           </Button>
         </Box>
       </Box>
